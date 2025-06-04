@@ -1,7 +1,7 @@
 // src/pages/Cart.jsx
 import { useRef } from 'react';
 import { motion } from "motion/react"
-import { useCart } from '../contexts/CartContext';
+import { useCart } from '../contexts/MarraContext';
 import CartItem from '../components/Cart/CartItem';
 import CartSummary from '../components/Cart/CartSummary';
 import { Link } from 'react-router-dom';

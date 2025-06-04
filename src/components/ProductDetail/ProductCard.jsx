@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from "motion/react";
-import FavoriteButton from './Header/FavoriteButton';
-import AddToCartIcon from './Header/AddToCartIcon';
-import PriceDisplay from '../ProductDetail/PriceDisplay'; // Agrega esta línea
+import FavoriteButton from '../common/Header/FavoriteButton';
+import AddToCartIcon from '../common/Header/AddToCartIcon';
+import PriceDisplay from './PriceDisplay';
 
 function ProductCard({ product }) {
   return (
@@ -25,7 +25,7 @@ function ProductCard({ product }) {
         </div>
         
         <h3 className="font-medium text-base mb-1">{product.name}</h3>
-        <PriceDisplay
+        <PriceDisplay 
           originalPrice={product.originalPrice}
           price={product.price}
           discount={product.discount}

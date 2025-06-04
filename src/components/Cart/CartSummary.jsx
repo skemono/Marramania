@@ -1,17 +1,19 @@
-// src/components/Cart/CartSummary.jsx
 import { motion } from "motion/react"
-import { useCart } from '../../contexts/CartContext';
+import { useCart } from '../../contexts/MarraContext';
 import { useMemo } from 'react';
 
 function CartSummary() {
-  const { cartTotal, clearCart } = useCart();
+  const { cartTotal, clearCart, getMaxCartTotal, isNearMaxTotal } = useCart();
   
   const shipping = 0;
   const discount = 15;
   
   const estimatedTotal = useMemo(() => {
-    return cartTotal + shipping - discount;
-  }, [cartTotal, shipping, discount]);
+    return Math.min(cartTotal + shipping - discount, getMaxCartTotal());
+  }, [cartTotal, shipping, discount, getMaxCartTotal]);
+  
+  const isAtLimit = cartTotal >= getMaxCartTotal();
+  const nearLimit = isNearMaxTotal();
   
   return (
     <motion.div 
@@ -35,13 +37,25 @@ function CartSummary() {
         <span>-${discount.toFixed(2)}</span>
       </div>
       
+      {(nearLimit || isAtLimit) && (
+        <div className={`p-3 rounded-lg text-sm ${isAtLimit ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
+          {isAtLimit 
+            ? `Cart limit reached ($${getMaxCartTotal().toFixed(2)})`
+            : `Approaching cart limit ($${getMaxCartTotal().toFixed(2)})`
+          }
+        </div>
+      )}
+      
       <div className="border-t pt-4">
         <div className="flex justify-between font-semibold text-lg mb-4">
           <span>Estimated Total</span>
           <span>${estimatedTotal.toFixed(2)}</span>
         </div>
         
-        <button className="w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition-colors mb-4">
+        <button
+          onClick={clearCart} 
+          className="w-full bg-green-500 text-white py-3 rounded-lg font-medium hover:bg-green-600 transition-colors mb-4"
+        >
           Checkout
         </button>
         
